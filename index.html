@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boyclicker</title>
+    <link rel="icon" href="boy.ico">
+    <style>
+        body { background-color: #fcfefc; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; user-select: none; flex-direction: column; overflow: hidden; }
+        #counter { font-size: 30px; margin-bottom: 20px; text-align: center; user-select: none; font-family: 'Comic Sans MS', sans-serif; transition: transform 0.2s ease-in-out; }
+        #clickable-gif { width: 200px; cursor: pointer; user-select: none; -webkit-user-drag: none; transition: transform 0.2s ease; transform-origin: center; }
+        #multiplier-text { font-size: 25px; color: #ff1493; font-weight: bold; font-family: 'Comic Sans MS', sans-serif; margin-top: 10px; transition: opacity 0.3s ease; }
+        #fun-text-container { margin-top: 20px; font-size: 30px; text-align: center; }
+        .fun-text { font-size: 25px; color: #ff1493; font-weight: bold; opacity: 0; position: absolute; transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .falling-gif { position: absolute; width: 100px; cursor: pointer; transition: transform 0.2s ease; }
+        #progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: #f2f2f2;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        #progress-bar {
+            height: 100%;
+            background-color: darkgoldenrod;
+            width: 0%;
+            transition: width 1s linear;
+        }
+        #shop { margin-top: 20px; text-align: center; }
+        .shop-button { background-color: #ff1493; color: white; border: none; padding: 10px 20px; font-size: 18px; cursor: pointer; margin: 5px; }
+        .shop-button:disabled { background-color: #bbb; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="counter">Cliks: 0</div>
+        <img id="clickable-gif" src="kisserstatic.png" alt="Click me!">
+    </div>
+    <div id="multiplier-text">mutlipler: x1</div>
+    <div id="fun-text-container"><div id="fun-text" class="fun-text">:3</div></div>
+    <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    <script>
+        let counter = 0, clickable = true, clickMultiplier = 1, autoClickers = 0;
+        let effectTimer = 0;
+        let effectActive = false;
+        let autoClickerInterval = null;
+        let autoClickerAmount = 0;
+        const gif = document.getElementById('clickable-gif');
+        const counterText = document.getElementById('counter');
+        const funText = document.getElementById('fun-text');
+        const multiplierText = document.getElementById('multiplier-text');
+        const gifSrc = "kisser.gif", imgSrc = "kisserstatic.png";
+        const audio = new Audio('meow.mp3');
+        const funTexts = [":3", ":33", "O//O", ">w<", "uwuuuu :3", ":D", "mrrp~ :3", "nya >w<", "OwO", "<3", "yayyyy", ":333333"];
+        const boyKisserSrc = "boykisser.gif";
+        const progressBarContainer = document.getElementById('progress-bar-container');
+        const progressBar = document.getElementById('progress-bar');
+        
+        gif.addEventListener('click', e => {
+            if (!clickable) return;
+            counter += 1 * clickMultiplier;
+            let displayCounter = counter.toFixed(3);
+            if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
+            else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
+            counterText.textContent = `Cliks: ${displayCounter} ${counter >= 100 ? `:${'3'.repeat(Math.floor(counter / 100))}` : ''}`;
+            scaleAndRotateEffect(e);
+            gif.src = "";
+            setTimeout(() => {gif.src = gifSrc;}, 10);
+            if (counter % 100 === 0) audio.play();
+            setTimeout(() => {gif.src = imgSrc; clickable = true;}, 720);
+            if (Math.random() < 0.03) animateFunText();
+        });
+    
+        function scaleAndRotateEffect(e) {
+            const rect = gif.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const angle = Math.atan2(mouseY - rect.height / 2, mouseX - rect.width / 2) * (180 / Math.PI);
+            gif.style.transform = `scale(1.1) rotate(${angle * 0.1}deg)`;
+            setTimeout(() => {gif.style.transform = "scale(1) rotate(0deg)";}, 200);
+        }
+    
+        function animateFunText() {
+            const randomText = funTexts[Math.floor(Math.random() * funTexts.length)];
+            funText.textContent = randomText;
+            funText.style.opacity = 1;
+            funText.style.transform = "scale(1.5)";
+            setTimeout(() => {funText.style.opacity = 0; funText.style.transform = "scale(1)";}, 600);
+        }
+    
+        let clickMultiplierUpgradeActive = false;
+
+        function createFallingBoyKisser() {
+            if (Math.random() < 0.1) {
+                const boyKisser = document.createElement('img');
+                boyKisser.src = boyKisserSrc;
+                boyKisser.classList.add('falling-gif');
+                boyKisser.style.left = `${Math.random() * window.innerWidth}px`;
+                boyKisser.style.top = `-100px`;
+                document.body.appendChild(boyKisser);
+                let fallInterval = setInterval(() => {
+                    const rect = boyKisser.getBoundingClientRect();
+                    if (rect.top >= window.innerHeight) {
+                        clearInterval(fallInterval);
+                        boyKisser.remove();
+                    } else {
+                        boyKisser.style.top = `${rect.top + 3}px`;
+                    }
+                }, 10);
+                boyKisser.addEventListener('click', () => {
+                    clickMultiplier += 2;
+                    multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+                    setTimeout(() => { 
+                        if (!clickMultiplierUpgradeActive) { 
+                            clickMultiplier -= 2; 
+                            multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+                        }
+                    }, 10000);
+                    boyKisser.remove();
+                    activateEffect(10);
+                });
+            }
+        }
+
+        function handleMultiplierUpgrade() {
+            if (clickMultiplierUpgradeActive) return;
+            clickMultiplierUpgradeActive = true;
+            clickMultiplier++;
+            multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+        }
+
+    
+        function activateEffect(duration) {
+            effectActive = true;
+            effectTimer = duration;
+            progressBarContainer.style.display = 'block';
+            let interval = setInterval(() => {
+                let progress = (effectTimer / duration) * 100;
+                progressBar.style.width = `${progress}%`;
+                effectTimer--;
+                if (effectTimer < 0) {
+                    clearInterval(interval);
+                    progressBarContainer.style.display = 'none';
+                    effectActive = false;
+                }
+            }, 1000);
+        }
+        let clickMultiplierLevel = 1;
+        function handleShopButtonClick(button) {
+            const cost = parseInt(button.getAttribute('data-cost'));
+            if (counter >= cost) {
+                counter -= cost;
+                updateCounterText();
+                if (button.id === 'auto-clicker-button') {
+                    autoClickerAmount++;
+                    button.textContent = `Auto Clicker (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
+                    button.setAttribute('data-cost', 20 * autoClickerAmount);
+                    if (autoClickerAmount === 1) startAutoClicking();
+                }
+                if (button.id === 'click-multiplier-button') {
+                    clickMultiplierLevel++;
+                    clickMultiplier++;
+                    multiplierText.textContent = `Multiplier: x${clickMultiplier}`;
+                    button.textContent = `Click Multiplier (x${clickMultiplierLevel}) - Cost: ${50 * clickMultiplierLevel}`;
+                    button.setAttribute('data-cost', 50 * clickMultiplierLevel);
+                }
+            }
+        }
+    
+        function startAutoClicking() {
+            autoClickerInterval = setInterval(() => {
+                counter += autoClickerAmount;
+                updateCounterText();
+            }, 1000);
+        }
+    
+        function updateCounterText() {
+            let displayCounter = counter.toFixed(3);
+            if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
+            else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
+            counterText.textContent = `Cliks: ${displayCounter} ${counter >= 100 ? `:${'3'.repeat(Math.floor(counter / 100))}` : ''}`;
+        }
+    
+        function createShop() {
+            const shopContainer = document.createElement('div');
+            shopContainer.style.textAlign = 'center';
+            shopContainer.style.marginTop = '20px';
+            
+            const autoClickerButton = document.createElement('button');
+            autoClickerButton.id = 'auto-clicker-button';
+            autoClickerButton.style.fontSize = '20px';
+            autoClickerButton.style.marginBottom = '10px';
+            autoClickerButton.style.cursor = 'pointer';
+            autoClickerButton.textContent = `Auto Clicker (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
+            autoClickerButton.setAttribute('data-cost', 20 * autoClickerAmount);
+            autoClickerButton.addEventListener('click', () => handleShopButtonClick(autoClickerButton));
+            
+            const clickMultiplierButton = document.createElement('button');
+            clickMultiplierButton.id = 'click-multiplier-button';
+            clickMultiplierButton.style.fontSize = '20px';
+            clickMultiplierButton.style.marginBottom = '10px';
+            clickMultiplierButton.style.cursor = 'pointer';
+            clickMultiplierButton.textContent = `Click Multiplier (x${clickMultiplier}) - Cost: ${50 * clickMultiplier}`;
+            clickMultiplierButton.setAttribute('data-cost', 50 * clickMultiplier);
+            clickMultiplierButton.addEventListener('click', () => handleShopButtonClick(clickMultiplierButton));
+            
+            shopContainer.appendChild(autoClickerButton);
+            shopContainer.appendChild(clickMultiplierButton);
+            document.body.appendChild(shopContainer);
+        }
+    
+        setInterval(createFallingBoyKisser, 1000);
+        createShop();
+    </script>
+</body>
+</html>
