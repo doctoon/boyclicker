@@ -110,11 +110,11 @@
                     }
                 }, 10);
                 boyKisser.addEventListener('click', () => {
-                    clickMultiplier += 2;
+                    clickMultiplier += 3;
                     multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
                     setTimeout(() => { 
                         if (!clickMultiplierUpgradeActive) { 
-                            clickMultiplier -= 2; 
+                            clickMultiplier -= 3; 
                             multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
                         }
                     }, 10000);
@@ -162,7 +162,7 @@
                 if (button.id === 'click-multiplier-button') {
                     clickMultiplierLevel++;
                     clickMultiplier++;
-                    multiplierText.textContent = `Multiplier: x${clickMultiplier}`;
+                    multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
                     button.textContent = `Click Multiplier (x${clickMultiplierLevel}) - Cost: ${50 * clickMultiplierLevel}`;
                     button.setAttribute('data-cost', 50 * clickMultiplierLevel);
                 }
