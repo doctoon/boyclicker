@@ -31,12 +31,20 @@
         #shop { margin-top: 20px; text-align: center; }
         .shop-button { background-color: #ff1493; color: white; border: none; padding: 10px 20px; font-size: 18px; cursor: pointer; margin: 5px; }
         .shop-button:disabled { background-color: #bbb; cursor: not-allowed; }
+        .center-container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <div>
         <div id="counter">Cliks: 0</div>
-        <img id="clickable-gif" src="kisserstatic.png" alt="Click me!">
+        <div class="center-container">
+            <img id="clickable-gif" src="kisserstatic.png" alt="Click me!">
+        </div>
     </div>
     <div id="multiplier-text">mutlipler: x1</div>
     <div id="fun-text-container"><div id="fun-text" class="fun-text">:3</div></div>
@@ -54,10 +62,9 @@
         const gifSrc = "kisser.gif", imgSrc = "kisserstatic.png";
         const audio = new Audio('meow.mp3');
         const funTexts = [":3", ":33", "O//O", ">w<", "uwuuuu :3", ":D", "mrrp~ :3", "nya >w<", "OwO", "<3", "yayyyy", ":333333"];
-        const boyKisserSrc = "boykisser.gif";
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
-        
+        audio.load();
         gif.addEventListener('click', e => {
             if (!clickable) return;
             counter += 1 * clickMultiplier;
@@ -68,11 +75,35 @@
             scaleAndRotateEffect(e);
             gif.src = "";
             setTimeout(() => {gif.src = gifSrc;}, 10);
-            if (counter % 100 === 0) audio.play();
+            if (Math.round(counter) % 100 === 0) {
+                audio.currentTime = 0;
+                audio.muted = false;
+                audio.play().catch(err => console.error("Audio playback failed:", err));
+            }
             setTimeout(() => {gif.src = imgSrc; clickable = true;}, 720);
             if (Math.random() < 0.03) animateFunText();
         });
-    
+        // background music
+        const audio2 = new Audio('Wii Shop Channel - Chill Remix.mp3');
+        audio2.loop = true;
+        audio2.volume = 0.5;
+        const playButton = document.createElement('button');
+        playButton.textContent = 'Play Music';
+        document.body.appendChild(playButton);
+        const muteButton = document.createElement('button');
+        muteButton.textContent = 'Mute';
+        muteButton.style.display = 'none';
+        document.body.appendChild(muteButton);
+        playButton.addEventListener('click', () => {
+            audio2.play();
+            playButton.style.display = 'none';
+            muteButton.style.display = 'inline';
+        });
+        muteButton.addEventListener('click', () => {
+            audio2.muted = !audio2.muted;
+            muteButton.textContent = audio2.muted ? 'Unmute' : 'Mute';
+        });
+        // self explandory
         function scaleAndRotateEffect(e) {
             const rect = gif.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
@@ -81,7 +112,7 @@
             gif.style.transform = `scale(1.1) rotate(${angle * 0.1}deg)`;
             setTimeout(() => {gif.style.transform = "scale(1) rotate(0deg)";}, 200);
         }
-    
+        // the text that has a chance to appear and says stuff like "uwu"
         function animateFunText() {
             const randomText = funTexts[Math.floor(Math.random() * funTexts.length)];
             funText.textContent = randomText;
@@ -89,49 +120,52 @@
             funText.style.transform = "scale(1.5)";
             setTimeout(() => {funText.style.opacity = 0; funText.style.transform = "scale(1)";}, 600);
         }
-    
         let clickMultiplierUpgradeActive = false;
-
-        function createFallingBoyKisser() {
-            if (Math.random() < 0.1) {
-                const boyKisser = document.createElement('img');
-                boyKisser.src = boyKisserSrc;
-                boyKisser.classList.add('falling-gif');
-                boyKisser.style.left = `${Math.random() * window.innerWidth}px`;
-                boyKisser.style.top = `-100px`;
-                document.body.appendChild(boyKisser);
+        // easy way to create fallin items
+        function createFallingItem(src, minMultiplier, maxMultiplier, duration, chance = 0.1) {
+            if (Math.random() < chance) {
+                const fallingItem = document.createElement('img');
+                fallingItem.src = src;
+                fallingItem.classList.add('falling-gif');
+                fallingItem.style.left = `${Math.random() * window.innerWidth}px`;
+                fallingItem.style.top = `-100px`;
+                document.body.appendChild(fallingItem);
                 let fallInterval = setInterval(() => {
-                    const rect = boyKisser.getBoundingClientRect();
+                    const rect = fallingItem.getBoundingClientRect();
                     if (rect.top >= window.innerHeight) {
                         clearInterval(fallInterval);
-                        boyKisser.remove();
+                        fallingItem.remove();
                     } else {
-                        boyKisser.style.top = `${rect.top + 3}px`;
+                        fallingItem.style.top = `${rect.top + 3}px`;
                     }
                 }, 10);
-                boyKisser.addEventListener('click', () => {
-                    clickMultiplier += 3;
+                fallingItem.addEventListener('click', () => {
+                    const addedMultiplier = Math.floor(Math.random() * (maxMultiplier - minMultiplier + 1)) + minMultiplier;
+                    clickMultiplier += addedMultiplier;
                     multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-                    setTimeout(() => { 
-                        if (!clickMultiplierUpgradeActive) { 
-                            clickMultiplier -= 3; 
+                    setTimeout(() => {
+                        if (!clickMultiplierUpgradeActive) {
+                            clickMultiplier -= addedMultiplier;
                             multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
                         }
-                    }, 10000);
-                    boyKisser.remove();
-                    activateEffect(10);
+                    }, duration);
+                    fallingItem.remove();
+                    activateEffect(duration / 1000);
                 });
             }
         }
-
+        setInterval(() => {
+            createFallingItem("goldbk.png", 2, 4, 15000, 0.1);
+            // createFallingItem(src, minMultiplier, maxMultiplier, duration, chance = 0.1) {
+        }, 1000);
+        const prideFlagImages = ["transgender.jpg", "rainbow.jpg", "lesbian.jpg"];
+        setInterval(() => {prideFlagImages.forEach(src => {createFallingItem(src, 2, 7, 2000, 0.05);});}, 30000);
         function handleMultiplierUpgrade() {
             if (clickMultiplierUpgradeActive) return;
             clickMultiplierUpgradeActive = true;
             clickMultiplier++;
             multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
         }
-
-    
         function activateEffect(duration) {
             effectActive = true;
             effectTimer = duration;
@@ -210,8 +244,6 @@
             shopContainer.appendChild(clickMultiplierButton);
             document.body.appendChild(shopContainer);
         }
-    
-        setInterval(createFallingBoyKisser, 1000);
         createShop();
     </script>
 </body>
