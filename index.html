@@ -50,6 +50,7 @@
     <div id="fun-text-container"><div id="fun-text" class="fun-text">:3</div></div>
     <div id="progress-bar-container"><div id="progress-bar"></div></div>
     <script>
+        // variables
         let counter = 0, clickable = true, clickMultiplier = 1, autoClickers = 0;
         let effectTimer = 0;
         let effectActive = false;
@@ -65,6 +66,7 @@
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
         audio.load();
+        // click thing
         gif.addEventListener('click', e => {
             if (!clickable) return;
             counter += 1 * clickMultiplier;
@@ -84,7 +86,7 @@
             if (Math.random() < 0.03) animateFunText();
         });
         // background music
-        const audio2 = new Audio('Wii Shop Channel - Chill Remix.mp3');
+        const audio2 = new Audio('bgm.mp3');
         audio2.loop = true;
         audio2.volume = 0.5;
         const playButton = document.createElement('button');
@@ -158,8 +160,6 @@
             createFallingItem("goldbk.png", 2, 4, 15000, 0.1);
             // createFallingItem(src, minMultiplier, maxMultiplier, duration, chance = 0.1) {
         }, 1000);
-        const prideFlagImages = ["transgender.jpg", "rainbow.jpg", "lesbian.jpg"];
-        setInterval(() => {prideFlagImages.forEach(src => {createFallingItem(src, 2, 7, 2000, 0.05);});}, 30000);
         function handleMultiplierUpgrade() {
             if (clickMultiplierUpgradeActive) return;
             clickMultiplierUpgradeActive = true;
@@ -181,6 +181,7 @@
                 }
             }, 1000);
         }
+        // main things [might get redone]
         let clickMultiplierLevel = 1;
         function handleShopButtonClick(button) {
             const cost = parseInt(button.getAttribute('data-cost'));
@@ -202,26 +203,22 @@
                 }
             }
         }
-    
         function startAutoClicking() {
             autoClickerInterval = setInterval(() => {
                 counter += autoClickerAmount;
                 updateCounterText();
             }, 1000);
         }
-    
         function updateCounterText() {
             let displayCounter = counter.toFixed(3);
             if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
             else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
             counterText.textContent = `Cliks: ${displayCounter} ${counter >= 100 ? `:${'3'.repeat(Math.floor(counter / 100))}` : ''}`;
         }
-    
         function createShop() {
             const shopContainer = document.createElement('div');
             shopContainer.style.textAlign = 'center';
             shopContainer.style.marginTop = '20px';
-            
             const autoClickerButton = document.createElement('button');
             autoClickerButton.id = 'auto-clicker-button';
             autoClickerButton.style.fontSize = '20px';
@@ -230,7 +227,6 @@
             autoClickerButton.textContent = `Auto Clicker (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
             autoClickerButton.setAttribute('data-cost', 20 * autoClickerAmount);
             autoClickerButton.addEventListener('click', () => handleShopButtonClick(autoClickerButton));
-            
             const clickMultiplierButton = document.createElement('button');
             clickMultiplierButton.id = 'click-multiplier-button';
             clickMultiplierButton.style.fontSize = '20px';
@@ -239,7 +235,6 @@
             clickMultiplierButton.textContent = `Click Multiplier (x${clickMultiplier}) - Cost: ${50 * clickMultiplier}`;
             clickMultiplierButton.setAttribute('data-cost', 50 * clickMultiplier);
             clickMultiplierButton.addEventListener('click', () => handleShopButtonClick(clickMultiplierButton));
-            
             shopContainer.appendChild(autoClickerButton);
             shopContainer.appendChild(clickMultiplierButton);
             document.body.appendChild(shopContainer);
