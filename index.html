@@ -49,6 +49,9 @@
     <div id="multiplier-text">mutlipler: x1</div>
     <div id="fun-text-container"><div id="fun-text" class="fun-text">:3</div></div>
     <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    <div id="achievementsContainer" style="text-align: center; font-family: 'Comic Sans MS', sans-serif; font-size: 26px; color: white; position: fixed; bottom: 10px; width: 100%; background-color: rgba(0, 0, 0, 0.5); padding: 10px;">
+        <p id="achievementsText">Boyclicker: Achievements Update (1.3 Alpha)</p>
+    </div>
     <script>
         // variables
         let counter = 0, clickable = true, clickMultiplier = 1, autoClickers = 0;
@@ -60,43 +63,108 @@
         const counterText = document.getElementById('counter');
         const funText = document.getElementById('fun-text');
         const multiplierText = document.getElementById('multiplier-text');
-        const gifSrc = "kisser.gif", imgSrc = "kisserstatic.png";
+        let gifSrc = "kisser.gif", imgSrc = "kisserstatic.png";
         const audio = new Audio('meow.mp3');
         const funTexts = [":3", ":33", "O//O", ">w<", "uwuuuu :3", ":D", "mrrp~ :3", "nya >w<", "OwO", "<3", "yayyyy", ":333333"];
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
+        let audioPlayed = false;
         audio.load();
         // click thing
         gif.addEventListener('click', e => {
+            const clickAudio = new Audio('click.mp3'); 
+            clickAudio.play();
             if (!clickable) return;
             counter += 1 * clickMultiplier;
+            checkAchievements(counter);
             let displayCounter = counter.toFixed(3);
             if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
             else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
             counterText.textContent = `Cliks: ${displayCounter} ${counter >= 100 ? `:${'3'.repeat(Math.floor(counter / 100))}` : ''}`;
             scaleAndRotateEffect(e);
             gif.src = "";
-            setTimeout(() => {gif.src = gifSrc;}, 10);
-            if (Math.round(counter) % 100 === 0) {
-                audio.currentTime = 0;
-                audio.muted = false;
-                audio.play().catch(err => console.error("Audio playback failed:", err));
+            // change gif src based on counter
+            if (counter > 1000) {
+                gifSrc = "goldbk.gif";
+                imgSrc = "goldbk.png";
+                gif.src = gifSrc;
+                if (!audioPlayed) {audio.play(); audioPlayed = true;}
+            } else {
+                gifSrc = "kisser.gif";
+                gif.src = gifSrc;
+                imgSrc = "kisserstatic.png";
             }
+            setTimeout(() => {gif.src = gifSrc;}, 10);
             setTimeout(() => {gif.src = imgSrc; clickable = true;}, 720);
-            if (Math.random() < 0.03) animateFunText();
+            if (Math.random() < 0.05) animateFunText();
         });
+
+        // Achievement system [NEW SYSTEM IN BETA MIGHT NOT WORK PROPERLY]
+        let goldBKClicks = 0;
+        let musicClicks = 0;
+        const achievements = {
+            "1stClik": { unlocked: false, goal: 1, name: "firs clik!!" },
+            "100Cliks": { unlocked: false, goal: 100, name: "firs hundrd cliks :3" },
+            "1000Cliks": { unlocked: false, goal: 1000, name: "YIPEEEE!!!" },
+            "PlayMusic": { unlocked: false, goal2: 1, name: "Musik yayyyy", type: "elementClick", elementId: "play-music-button" },
+            "GoldenKiss1": { unlocked: false, goal2: 1, name: "goldn boykisr", type: "elementClick", elementId: "falling-gif" },
+            "GoldenKiss3": { unlocked: false, goal2: 3, name: "the golden >.<", type: "elementClick", elementId: "falling-gif" },
+            "GoldenKiss5": { unlocked: false, goal2: 5, name: "omg so shiny", type: "elementClick", elementId: "falling-gif" },
+        };
+        function checkAchievements(clickCount) {
+            for (let key in achievements) {
+                const achievement = achievements[key];
+                if (!achievement.unlocked && clickCount >= achievement.goal) {
+                    achievement.unlocked = true;
+                    showAchievement(achievement);
+                }
+            }
+        }
+        function checkElementClickAchievements(clickedElementId) {
+        for (let key in achievements) {
+            const achievement = achievements[key];
+            if (!achievement.unlocked && achievement.type === "elementClick" && clickedElementId === achievement.elementId) {
+                if (achievement.elementId === "play-music-button") {
+                    if (achievement.musicClicks === undefined) achievement.musicClicks = 0;
+                    achievement.musicClicks++;
+                }
+                if (achievement.elementId === "falling-gif") {
+                    if (!achievement.goldBKClicks) achievement.goldBKClicks = 0;
+                    achievement.goldBKClicks++;
+                }
+                const currentClicks = achievement.elementId === "play-music-button" ? achievement.musicClicks : achievement.goldBKClicks;
+                    if (currentClicks >= achievement.goal2) {
+                        achievement.unlocked = true;
+                        showAchievement(achievement);
+                    }
+                }
+            }
+        }
+        function showAchievement(achievement) {
+            multiplierText.textContent = `achievmnt unlocd: ${achievement.name}`;
+            console.log(`Achievement unlocked: ${achievement.name}`);
+            multiplierText.style.color = '#b8860b';
+            const achievementSound = new Audio('achievement.mp3');
+            achievementSound.play();
+            setTimeout(() => {
+                multiplierText.style.color = '#ff1493';
+                multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+            }, 2178);
+        }
         // background music
         const audio2 = new Audio('bgm.mp3');
         audio2.loop = true;
         audio2.volume = 0.5;
         const playButton = document.createElement('button');
         playButton.textContent = 'Play Music';
+        playButton.id = 'play-music-button';
         document.body.appendChild(playButton);
         const muteButton = document.createElement('button');
         muteButton.textContent = 'Mute';
         muteButton.style.display = 'none';
         document.body.appendChild(muteButton);
-        playButton.addEventListener('click', () => {
+        playButton.addEventListener('click', (event) => {
+            checkElementClickAchievements(event.target.id);
             audio2.play();
             playButton.style.display = 'none';
             muteButton.style.display = 'inline';
@@ -105,6 +173,8 @@
             audio2.muted = !audio2.muted;
             muteButton.textContent = audio2.muted ? 'Unmute' : 'Mute';
         });
+
+        // VISUALS
         // self explandory
         function scaleAndRotateEffect(e) {
             const rect = gif.getBoundingClientRect();
@@ -123,6 +193,8 @@
             setTimeout(() => {funText.style.opacity = 0; funText.style.transform = "scale(1)";}, 600);
         }
         let clickMultiplierUpgradeActive = false;
+
+        // click thing 2
         // easy way to create fallin items
         function createFallingItem(src, minMultiplier, maxMultiplier, duration, chance = 0.1) {
             if (Math.random() < chance) {
@@ -141,18 +213,23 @@
                         fallingItem.style.top = `${rect.top + 3}px`;
                     }
                 }, 10);
-                fallingItem.addEventListener('click', () => {
+                fallingItem.addEventListener('click', (event) => {
                     const addedMultiplier = Math.floor(Math.random() * (maxMultiplier - minMultiplier + 1)) + minMultiplier;
                     clickMultiplier += addedMultiplier;
                     multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+                    audio.currentTime = 0;
+                    audio.muted = false;
+                    audio.play().catch(err => console.error("Audio playback failed:", err));
                     setTimeout(() => {
                         if (!clickMultiplierUpgradeActive) {
                             clickMultiplier -= addedMultiplier;
                             multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
                         }
                     }, duration);
+
                     fallingItem.remove();
                     activateEffect(duration / 1000);
+                    checkElementClickAchievements("falling-gif");
                 });
             }
         }
@@ -160,12 +237,6 @@
             createFallingItem("goldbk.png", 2, 4, 15000, 0.1);
             // createFallingItem(src, minMultiplier, maxMultiplier, duration, chance = 0.1) {
         }, 1000);
-        function handleMultiplierUpgrade() {
-            if (clickMultiplierUpgradeActive) return;
-            clickMultiplierUpgradeActive = true;
-            clickMultiplier++;
-            multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-        }
         function activateEffect(duration) {
             effectActive = true;
             effectTimer = duration;
@@ -181,16 +252,26 @@
                 }
             }, 1000);
         }
-        // main things [might get redone]
+
+        // UPGRADE/SHOP SYSTEM [needs revamp]
         let clickMultiplierLevel = 1;
+        function handleMultiplierUpgrade() {
+            if (clickMultiplierUpgradeActive) return;
+            clickMultiplierUpgradeActive = true;
+            clickMultiplier++;
+            multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+        }
         function handleShopButtonClick(button) {
             const cost = parseInt(button.getAttribute('data-cost'));
+            const upgradeFailAudio = new Audio('UpgradeFail.mp3'); 
+            const upgradeSuccessAudio = new Audio('Upgrade.mp3');
             if (counter >= cost) {
                 counter -= cost;
                 updateCounterText();
+                upgradeSuccessAudio.play();
                 if (button.id === 'auto-clicker-button') {
                     autoClickerAmount++;
-                    button.textContent = `Auto Clicker (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
+                    button.textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
                     button.setAttribute('data-cost', 20 * autoClickerAmount);
                     if (autoClickerAmount === 1) startAutoClicking();
                 }
@@ -198,10 +279,10 @@
                     clickMultiplierLevel++;
                     clickMultiplier++;
                     multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-                    button.textContent = `Click Multiplier (x${clickMultiplierLevel}) - Cost: ${50 * clickMultiplierLevel}`;
+                    button.textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${50 * clickMultiplierLevel}`;
                     button.setAttribute('data-cost', 50 * clickMultiplierLevel);
                 }
-            }
+            } else {upgradeFailAudio.play();}
         }
         function startAutoClicking() {
             autoClickerInterval = setInterval(() => {
@@ -224,7 +305,7 @@
             autoClickerButton.style.fontSize = '20px';
             autoClickerButton.style.marginBottom = '10px';
             autoClickerButton.style.cursor = 'pointer';
-            autoClickerButton.textContent = `Auto Clicker (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
+            autoClickerButton.textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
             autoClickerButton.setAttribute('data-cost', 20 * autoClickerAmount);
             autoClickerButton.addEventListener('click', () => handleShopButtonClick(autoClickerButton));
             const clickMultiplierButton = document.createElement('button');
@@ -232,7 +313,7 @@
             clickMultiplierButton.style.fontSize = '20px';
             clickMultiplierButton.style.marginBottom = '10px';
             clickMultiplierButton.style.cursor = 'pointer';
-            clickMultiplierButton.textContent = `Click Multiplier (x${clickMultiplier}) - Cost: ${50 * clickMultiplier}`;
+            clickMultiplierButton.textContent = `clik multiplr (x${clickMultiplier}) - Cost: ${50 * clickMultiplier}`;
             clickMultiplierButton.setAttribute('data-cost', 50 * clickMultiplier);
             clickMultiplierButton.addEventListener('click', () => handleShopButtonClick(clickMultiplierButton));
             shopContainer.appendChild(autoClickerButton);
