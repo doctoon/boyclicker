@@ -1,10 +1,9 @@
 # boyclicker
+a game where you click a boykisser
+thats where the name comes from
+mrow
 
-## Changelog
-MORE COMING SOON !!
-# Update 1.3 
-added achievements, more sounds, sillified the remaining text elements.
-### achivmnets >w<
+## achivmnets >w<
 #### CLIK COUNTR ACHIVMNETS:
 firs clik!! - clik the boykisr<br>
 firs hundrd cliks :3 - get a hunrd cliks!<br>
@@ -15,6 +14,10 @@ goldn boykisr - ???<br>
 the golden >.< - ???<br>
 omg so shiny - ???<br>
 <br>
+## Changelog
+MORE COMING SOON !!
+# Update 1.3 
+added achievements, more sounds, sillified the remaining text elements.
 # Update 1.2
 revamped certain systems (NOT the shop system), added music, remade the assets [besides the favicon], and fixed a lot of bugs!
 # Update 1.1
