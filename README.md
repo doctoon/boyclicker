@@ -21,6 +21,7 @@ omg so shiny - ???<br>
 ## Changelog
 MORE COMING SOON !!
 # Update 1.4.2: or did it?
+##### Released on December 17th 2024.
 fixed game breaking bug with saving that included unlimited autoclickers by simply waiting
 also fixed all text elements [finally] and updated the cursors :D
 # Update 1.4.1: Progress saved successfully.
