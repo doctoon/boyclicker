@@ -58,6 +58,7 @@
         let effectTimer = 0;
         let effectActive = false;
         let autoClickerInterval = null;
+        let isAutoClickerRunning = false;
         let autoClickerAmount = 0;
         const gif = document.getElementById('clickable-gif');
         const counterText = document.getElementById('counter');
@@ -76,11 +77,13 @@
         audio2.volume = 0.5;
         const playButton = document.createElement('button');
         playButton.textContent = 'pley musik';
+        playButton.style.cursor = 'pointer';
         playButton.id = 'play-music-button';
         document.body.appendChild(playButton);
         const muteButton = document.createElement('button');
-        muteButton.textContent = 'Mute';
+        muteButton.textContent = 'mute :c';
         muteButton.style.display = 'none';
+        muteButton.style.cursor = 'pointer';
         document.body.appendChild(muteButton);
         playButton.addEventListener('click', (event) => {
             checkElementClickAchievements(event.target.id);
@@ -90,7 +93,7 @@
         });
         muteButton.addEventListener('click', () => {
             audio2.muted = !audio2.muted;
-            muteButton.textContent = audio2.muted ? 'Unmute' : 'Mute';
+            muteButton.textContent = audio2.muted ? 'unmute :3' : 'mute :c';
         });
         // click thing
         gif.addEventListener('click', e => {
@@ -179,6 +182,8 @@
             }, 1000);
         }
         function startAutoClicking() {
+            if (isAutoClickerRunning) return; 
+            isAutoClickerRunning = true;
             autoClickerInterval = setInterval(() => {
                 counter += autoClickerAmount;
                 updateCounterText();
@@ -201,7 +206,7 @@
                 achievements
             };
             localStorage.setItem('gameSave', JSON.stringify(gameState));
-            startAutoClicking()
+            if (autoClickerAmount > 0) startAutoClicking();
         }
         function loadGame() {
             const savedState = JSON.parse(localStorage.getItem('gameSave'));
