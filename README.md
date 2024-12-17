@@ -4,7 +4,7 @@ thats where the name comes from
 mrow
 
 ## acknologed bugs:
-in the latest version [1.4.1] - since the <pre> ```javascript startAutoClicking(); ``` </pre> function keeps getting called every save [so every second] itll make you get wayyyy more cliks than ur supposed to. :c
+in the latest version [1.4.1] - since the `startAutoClicking();` function keeps getting called every save [so every second] itll make you get wayyyy more cliks than ur supposed to. :c
 
 ## achivmnets >w<
 #### CLIK COUNTR ACHIVMNETS:
