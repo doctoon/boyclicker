@@ -41,7 +41,7 @@
 </head>
 <body>
     <div>
-        <div id="counter">Cliks: 0</div>
+        <div id="counter">cliks: 0</div>
         <div class="center-container">
             <img id="clickable-gif" src="kisserstatic.png" alt="Click me!">
         </div>
@@ -50,7 +50,7 @@
     <div id="fun-text-container"><div id="fun-text" class="fun-text">:3</div></div>
     <div id="progress-bar-container"><div id="progress-bar"></div></div>
     <div id="achievementsContainer" style="text-align: center; font-family: 'Comic Sans MS', sans-serif; font-size: 26px; color: white; position: fixed; bottom: 10px; width: 100%; background-color: rgba(0, 0, 0, 0.5); padding: 10px;">
-        <p id="achievementsText">Boyclicker: Achievements Update (1.3 Alpha)</p>
+        <p id="achievementsText">boyclicker; created by @doctoon on discord :3</p>
     </div>
     <script>
         // variables
@@ -75,7 +75,7 @@
         audio2.loop = true;
         audio2.volume = 0.5;
         const playButton = document.createElement('button');
-        playButton.textContent = 'Play Music';
+        playButton.textContent = 'pley musik';
         playButton.id = 'play-music-button';
         document.body.appendChild(playButton);
         const muteButton = document.createElement('button');
@@ -102,7 +102,7 @@
             let displayCounter = counter.toFixed(3);
             if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
             else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
-            counterText.innerHTML = `Cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
+            counterText.innerHTML = `cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
             scaleAndRotateEffect(e);
             gif.src = "";
             // change gif src based on counter
@@ -184,6 +184,12 @@
                 updateCounterText();
             }, 1000);
         }
+        function updateCounterText() {
+            let displayCounter = counter.toFixed(3);
+            if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
+            else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
+            counterText.innerHTML = `cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
+        }
         // SAVING SYSTEM [might be buggy]
         function saveGame() {
             const gameState = {
@@ -191,9 +197,11 @@
                 clickMultiplier,
                 clickMultiplierLevel,
                 autoClickerAmount,
+                autoClickers,
                 achievements
             };
             localStorage.setItem('gameSave', JSON.stringify(gameState));
+            startAutoClicking()
         }
         function loadGame() {
             const savedState = JSON.parse(localStorage.getItem('gameSave'));
@@ -205,8 +213,12 @@
                 achievements = savedState.achievements || achievements;
                 updateCounterText();
                 multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-                document.getElementById('auto-clicker-button').textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
-                document.getElementById('click-multiplier-button').textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${50 * clickMultiplierLevel}`;
+                const autoClickerCost = Math.floor(20 * Math.pow(1.3, autoClickerAmount));
+                const clickMultiplierCost = Math.floor(50 * Math.pow(1.5, clickMultiplierLevel));
+                document.getElementById('auto-clicker-button').textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${autoClickerCost}`;
+                document.getElementById('auto-clicker-button').setAttribute('data-cost', autoClickerCost);
+                document.getElementById('click-multiplier-button').textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${clickMultiplierCost}`;
+                document.getElementById('click-multiplier-button').setAttribute('data-cost', clickMultiplierCost);
             }
         }
         setInterval(saveGame, 1000);
@@ -316,12 +328,6 @@
             } else {
                 upgradeFailAudio.play();
             }
-        }
-        function updateCounterText() {
-            let displayCounter = counter.toFixed(3);
-            if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
-            else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
-            counterText.innerHTML = `Cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
         }
         function createShop() {
             const shopContainer = document.createElement('div');
