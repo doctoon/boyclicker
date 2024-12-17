@@ -70,87 +70,6 @@
         const progressBar = document.getElementById('progress-bar');
         let audioPlayed = false;
         audio.load();
-        // click thing
-        gif.addEventListener('click', e => {
-            const clickAudio = new Audio('click.mp3'); 
-            clickAudio.play();
-            if (!clickable) return;
-            counter += 1 * clickMultiplier;
-            checkAchievements(counter);
-            let displayCounter = counter.toFixed(3);
-            if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
-            else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
-            counterText.textContent = `Cliks: ${displayCounter} ${counter >= 100 ? `:${'3'.repeat(Math.floor(counter / 100))}` : ''}`;
-            scaleAndRotateEffect(e);
-            gif.src = "";
-            // change gif src based on counter
-            if (counter > 1000) {
-                gifSrc = "goldbk.gif";
-                imgSrc = "goldbk.png";
-                gif.src = gifSrc;
-                if (!audioPlayed) {audio.play(); audioPlayed = true;}
-            } else {
-                gifSrc = "kisser.gif";
-                gif.src = gifSrc;
-                imgSrc = "kisserstatic.png";
-            }
-            setTimeout(() => {gif.src = gifSrc;}, 10);
-            setTimeout(() => {gif.src = imgSrc; clickable = true;}, 720);
-            if (Math.random() < 0.05) animateFunText();
-        });
-
-        // Achievement system [NEW SYSTEM IN BETA MIGHT NOT WORK PROPERLY]
-        let goldBKClicks = 0;
-        let musicClicks = 0;
-        const achievements = {
-            "1stClik": { unlocked: false, goal: 1, name: "firs clik!!" },
-            "100Cliks": { unlocked: false, goal: 100, name: "firs hundrd cliks :3" },
-            "1000Cliks": { unlocked: false, goal: 1000, name: "YIPEEEE!!!" },
-            "PlayMusic": { unlocked: false, goal2: 1, name: "Musik yayyyy", type: "elementClick", elementId: "play-music-button" },
-            "GoldenKiss1": { unlocked: false, goal2: 1, name: "goldn boykisr", type: "elementClick", elementId: "falling-gif" },
-            "GoldenKiss3": { unlocked: false, goal2: 3, name: "the golden >.<", type: "elementClick", elementId: "falling-gif" },
-            "GoldenKiss5": { unlocked: false, goal2: 5, name: "omg so shiny", type: "elementClick", elementId: "falling-gif" },
-        };
-        function checkAchievements(clickCount) {
-            for (let key in achievements) {
-                const achievement = achievements[key];
-                if (!achievement.unlocked && clickCount >= achievement.goal) {
-                    achievement.unlocked = true;
-                    showAchievement(achievement);
-                }
-            }
-        }
-        function checkElementClickAchievements(clickedElementId) {
-        for (let key in achievements) {
-            const achievement = achievements[key];
-            if (!achievement.unlocked && achievement.type === "elementClick" && clickedElementId === achievement.elementId) {
-                if (achievement.elementId === "play-music-button") {
-                    if (achievement.musicClicks === undefined) achievement.musicClicks = 0;
-                    achievement.musicClicks++;
-                }
-                if (achievement.elementId === "falling-gif") {
-                    if (!achievement.goldBKClicks) achievement.goldBKClicks = 0;
-                    achievement.goldBKClicks++;
-                }
-                const currentClicks = achievement.elementId === "play-music-button" ? achievement.musicClicks : achievement.goldBKClicks;
-                    if (currentClicks >= achievement.goal2) {
-                        achievement.unlocked = true;
-                        showAchievement(achievement);
-                    }
-                }
-            }
-        }
-        function showAchievement(achievement) {
-            multiplierText.textContent = `achievmnt unlocd: ${achievement.name}`;
-            console.log(`Achievement unlocked: ${achievement.name}`);
-            multiplierText.style.color = '#b8860b';
-            const achievementSound = new Audio('achievement.mp3');
-            achievementSound.play();
-            setTimeout(() => {
-                multiplierText.style.color = '#ff1493';
-                multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-            }, 2178);
-        }
         // background music
         const audio2 = new Audio('bgm.mp3');
         audio2.loop = true;
@@ -173,27 +92,34 @@
             audio2.muted = !audio2.muted;
             muteButton.textContent = audio2.muted ? 'Unmute' : 'Mute';
         });
-
-        // VISUALS
-        // self explandory
-        function scaleAndRotateEffect(e) {
-            const rect = gif.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            const angle = Math.atan2(mouseY - rect.height / 2, mouseX - rect.width / 2) * (180 / Math.PI);
-            gif.style.transform = `scale(1.1) rotate(${angle * 0.1}deg)`;
-            setTimeout(() => {gif.style.transform = "scale(1) rotate(0deg)";}, 200);
-        }
-        // the text that has a chance to appear and says stuff like "uwu"
-        function animateFunText() {
-            const randomText = funTexts[Math.floor(Math.random() * funTexts.length)];
-            funText.textContent = randomText;
-            funText.style.opacity = 1;
-            funText.style.transform = "scale(1.5)";
-            setTimeout(() => {funText.style.opacity = 0; funText.style.transform = "scale(1)";}, 600);
-        }
-        let clickMultiplierUpgradeActive = false;
-
+        // click thing
+        gif.addEventListener('click', e => {
+            const clickAudio = new Audio('click.mp3'); 
+            clickAudio.play();
+            if (!clickable) return;
+            counter += 1 * clickMultiplier;
+            checkAchievements(counter);
+            let displayCounter = counter.toFixed(3);
+            if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
+            else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
+            counterText.innerHTML = `Cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
+            scaleAndRotateEffect(e);
+            gif.src = "";
+            // change gif src based on counter
+            if (counter > 1000) {
+                gifSrc = "goldbk.gif";
+                imgSrc = "goldbk.png";
+                gif.src = gifSrc;
+                if (!audioPlayed) {audio.play(); audioPlayed = true;}
+            } else {
+                gifSrc = "kisser.gif";
+                gif.src = gifSrc;
+                imgSrc = "kisserstatic.png";
+            }
+            setTimeout(() => {gif.src = gifSrc;}, 10);
+            setTimeout(() => {gif.src = imgSrc; clickable = true;}, 720);
+            if (Math.random() < 0.05) animateFunText();
+        });
         // click thing 2
         // easy way to create fallin items
         function createFallingItem(src, minMultiplier, maxMultiplier, duration, chance = 0.1) {
@@ -252,7 +178,110 @@
                 }
             }, 1000);
         }
-
+        function startAutoClicking() {
+            autoClickerInterval = setInterval(() => {
+                counter += autoClickerAmount;
+                updateCounterText();
+            }, 1000);
+        }
+        // SAVING SYSTEM [might be buggy]
+        function saveGame() {
+            const gameState = {
+                counter,
+                clickMultiplier,
+                clickMultiplierLevel,
+                autoClickerAmount,
+                achievements
+            };
+            localStorage.setItem('gameSave', JSON.stringify(gameState));
+        }
+        function loadGame() {
+            const savedState = JSON.parse(localStorage.getItem('gameSave'));
+            if (savedState) {
+                counter = savedState.counter || 0;
+                clickMultiplier = savedState.clickMultiplier || 1;
+                clickMultiplierLevel = savedState.clickMultiplierLevel || 1;
+                autoClickerAmount = savedState.autoClickerAmount || 0;
+                achievements = savedState.achievements || achievements;
+                updateCounterText();
+                multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+                document.getElementById('auto-clicker-button').textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
+                document.getElementById('click-multiplier-button').textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${50 * clickMultiplierLevel}`;
+            }
+        }
+        setInterval(saveGame, 1000);
+        function resetGame() { localStorage.removeItem('gameSave'); location.reload(); }
+        // Achievement system 
+        let goldBKClicks = 0;
+        let musicClicks = 0;
+        let achievements = {
+            "1stClik": { unlocked: false, goal: 1, name: "firs clik!!" },
+            "100Cliks": { unlocked: false, goal: 100, name: "firs hundrd cliks :3" },
+            "1000Cliks": { unlocked: false, goal: 1000, name: "YIPEEEE!!!" },
+            "PlayMusic": { unlocked: false, goal2: 1, name: "Musik yayyyy", type: "elementClick", elementId: "play-music-button" },
+            "GoldenKiss1": { unlocked: false, goal2: 1, name: "goldn boykisr", type: "elementClick", elementId: "falling-gif" },
+            "GoldenKiss3": { unlocked: false, goal2: 3, name: "the golden >.<", type: "elementClick", elementId: "falling-gif" },
+            "GoldenKiss5": { unlocked: false, goal2: 5, name: "omg so shiny", type: "elementClick", elementId: "falling-gif" },
+        };
+        function checkAchievements(clickCount) {
+            for (let key in achievements) {
+                const achievement = achievements[key];
+                if (!achievement.unlocked && clickCount >= achievement.goal) {
+                    achievement.unlocked = true;
+                    showAchievement(achievement);
+                }
+            }
+        }
+        function checkElementClickAchievements(clickedElementId) {
+        for (let key in achievements) {
+            const achievement = achievements[key];
+            if (!achievement.unlocked && achievement.type === "elementClick" && clickedElementId === achievement.elementId) {
+                if (achievement.elementId === "play-music-button") {
+                    if (achievement.musicClicks === undefined) achievement.musicClicks = 0;
+                    achievement.musicClicks++;
+                }
+                if (achievement.elementId === "falling-gif") {
+                    if (!achievement.goldBKClicks) achievement.goldBKClicks = 0;
+                    achievement.goldBKClicks++;
+                }
+                const currentClicks = achievement.elementId === "play-music-button" ? achievement.musicClicks : achievement.goldBKClicks;
+                    if (currentClicks >= achievement.goal2) {
+                        achievement.unlocked = true;
+                        showAchievement(achievement);
+                    }
+                }
+            }
+        }
+        function showAchievement(achievement) {
+            multiplierText.textContent = `achievmnt unlocd: ${achievement.name}`;
+            console.log(`Achievement unlocked: ${achievement.name}`);
+            multiplierText.style.color = '#b8860b';
+            const achievementSound = new Audio('achievement.mp3');
+            achievementSound.play();
+            setTimeout(() => {
+                multiplierText.style.color = '#ff1493';
+                multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
+            }, 2178);
+        }
+        // VISUALS
+        // self explandory
+        function scaleAndRotateEffect(e) {
+            const rect = gif.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const angle = Math.atan2(mouseY - rect.height / 2, mouseX - rect.width / 2) * (180 / Math.PI);
+            gif.style.transform = `scale(1.1) rotate(${angle * 0.1}deg)`;
+            setTimeout(() => {gif.style.transform = "scale(1) rotate(0deg)";}, 200);
+        }
+        // the text that has a chance to appear and says stuff like "uwu"
+        function animateFunText() {
+            const randomText = funTexts[Math.floor(Math.random() * funTexts.length)];
+            funText.textContent = randomText;
+            funText.style.opacity = 1;
+            funText.style.transform = "scale(1.5)";
+            setTimeout(() => {funText.style.opacity = 0; funText.style.transform = "scale(1)";}, 600);
+        }
+        let clickMultiplierUpgradeActive = false;
         // UPGRADE/SHOP SYSTEM [needs revamp]
         let clickMultiplierLevel = 1;
         function handleMultiplierUpgrade() {
@@ -262,39 +291,37 @@
             multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
         }
         function handleShopButtonClick(button) {
-            const cost = parseInt(button.getAttribute('data-cost'));
-            const upgradeFailAudio = new Audio('UpgradeFail.mp3'); 
+            const upgradeFailAudio = new Audio('UpgradeFail.mp3');
             const upgradeSuccessAudio = new Audio('Upgrade.mp3');
+            let cost = parseInt(button.getAttribute('data-cost'));
             if (counter >= cost) {
                 counter -= cost;
                 updateCounterText();
                 upgradeSuccessAudio.play();
                 if (button.id === 'auto-clicker-button') {
                     autoClickerAmount++;
-                    button.textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`;
-                    button.setAttribute('data-cost', 20 * autoClickerAmount);
+                    cost = Math.floor(20 * Math.pow(1.3, autoClickerAmount));
+                    button.textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${cost}`;
+                    button.setAttribute('data-cost', cost);
                     if (autoClickerAmount === 1) startAutoClicking();
                 }
                 if (button.id === 'click-multiplier-button') {
                     clickMultiplierLevel++;
                     clickMultiplier++;
                     multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-                    button.textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${50 * clickMultiplierLevel}`;
-                    button.setAttribute('data-cost', 50 * clickMultiplierLevel);
+                    cost = Math.floor(50 * Math.pow(1.5, clickMultiplierLevel));
+                    button.textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${cost}`;
+                    button.setAttribute('data-cost', cost);
                 }
-            } else {upgradeFailAudio.play();}
-        }
-        function startAutoClicking() {
-            autoClickerInterval = setInterval(() => {
-                counter += autoClickerAmount;
-                updateCounterText();
-            }, 1000);
+            } else {
+                upgradeFailAudio.play();
+            }
         }
         function updateCounterText() {
             let displayCounter = counter.toFixed(3);
             if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
             else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
-            counterText.textContent = `Cliks: ${displayCounter} ${counter >= 100 ? `:${'3'.repeat(Math.floor(counter / 100))}` : ''}`;
+            counterText.innerHTML = `Cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
         }
         function createShop() {
             const shopContainer = document.createElement('div');
@@ -321,6 +348,7 @@
             document.body.appendChild(shopContainer);
         }
         createShop();
+        loadGame();
     </script>
 </body>
 </html>
