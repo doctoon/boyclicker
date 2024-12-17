@@ -16,6 +16,8 @@ omg so shiny - ???<br>
 <br>
 ## Changelog
 MORE COMING SOON !!
+# Update 1.4.1: Progress saved successfully.
+fixed a few game breaking bugs with saving.
 # Update 1.4: Saving Progress...
 added exponential prices, organized the code, and SAVING WOOOOOHOOOOOOO!!
 [1 save per second]
