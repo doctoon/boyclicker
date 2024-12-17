@@ -4,7 +4,8 @@ thats where the name comes from
 mrow
 
 ## acknologed bugs:
-in the latest version [1.4.1] - since the `startAutoClicking();` function keeps getting called every save [so every second] itll make you get wayyyy more cliks than ur supposed to. :c
+all of them are fixed :D 
+feel free to send any bug reports to `doctoon` on discord.
 
 ## achivmnets >w<
 #### CLIK COUNTR ACHIVMNETS:
@@ -19,6 +20,8 @@ omg so shiny - ???<br>
 <br>
 ## Changelog
 MORE COMING SOON !!
+# Update 1.4.2: or did it?
+fixed game breaking bug with saving that included unlimited autoclickers by simply waiting
 # Update 1.4.1: Progress saved successfully.
 ##### Released on December 17th 2024.
 fixed a few game breaking bugs with saving.
