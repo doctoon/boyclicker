@@ -12,14 +12,32 @@ feel free to send any bug reports to `doctoon` on discord.
 firs clik!! - clik the boykisr<br>
 firs hundrd cliks :3 - get a hunrd cliks!<br>
 YIPEEEE!!! - ???<br>
+and way more...
 #### ELEMNT CLIK ACHIVMNETZ:
 Musik yayyyy - pley musik<br>
 goldn boykisr - ???<br>
 the golden >.< - ???<br>
 omg so shiny - ???<br>
+Read More.
 <br>
 ## Changelog
 MORE COMING SOON !!
+# Update 1.5: merry clikmas
+From **Discord Descent > #📢・Announcements**:
+Boyclicker has finally recieved an update, here is every feature that got added in 1.5:
+- Embedding onto websites
+- More Achievements
+- Saving Rework
+- Fixed the Exponential Pricing System [EPS]
+- Click Progression
+- Dialogue
+- Visual Enhance V2
+- Debugging Logs
+- Fixed LOTS of bugs
+- text file support (currently dev only)
+- Shop Rework
+- Lore
+- Removed Herobrine
 # Update 1.4.2: or did it?
 ##### Released on December 17th 2024.
 fixed game breaking bug with saving that included unlimited autoclickers by simply waiting
