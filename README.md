@@ -23,7 +23,7 @@ Read More.
 ## Changelog
 MORE COMING SOON !!
 # Update 1.5: merry clikmas
-From **Discord Descent > #📢・Announcements**:
+From **Discord Descent > #📢・Announcements**:<br>
 Boyclicker has finally recieved an update, here is every feature that got added in 1.5:
 - Embedding onto websites
 - More Achievements
