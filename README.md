@@ -4,7 +4,9 @@ thats where the name comes from
 mrow
 
 ## acknologed bugs:
-all of them are fixed :D 
+~~all of them are fixed :D<br>~~
+- UI Breaking on Non-Computer devices.
+- Prices not updating to the new EPS changes from 1.5 when reloading.
 feel free to send any bug reports to `doctoon` on discord.
 
 ## achivmnets >w<
