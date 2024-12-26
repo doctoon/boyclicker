@@ -7,7 +7,8 @@ mrow
 ~~all of them are fixed :D<br>~~
 - UI Breaking on Non-Computer devices.
 - Prices not updating to the new EPS changes from 1.5 when reloading.
-<br> feel free to send any bug reports to `doctoon` on discord.
+<br>
+feel free to send any bug reports to `doctoon` on discord.
 
 ## achivmnets >w<
 #### CLIK COUNTR ACHIVMNETS:
