@@ -7,6 +7,13 @@ mrow
 ~~all of them are fixed :D<br>~~
 - UI Breaking on Non-Computer devices.  
 - Prices not updating to the new EPS changes from 1.5 when reloading.
+- MOBILE BUGS:
+  - meow.mp3 is too loud (and some other sounds are basically unhearable)
+  - comic sans isnt on your phone
+  - :33333 can overflow [no css query preventing that]
+  - spam tapping can pause the flow of falling items
+  - dialogue causing many ui errors on mobile
+  - blue overlay on tap
 
 feel free to send any bug reports to `doctoon` on discord.
 
