@@ -11,6 +11,7 @@ mrow
   - meow.mp3 is too loud (and some other sounds are basically unhearable)
   - comic sans isnt on your phone
   - :33333 can overflow [no css query preventing that]
+    - falling bk also falls beyond screen bounds.
   - spam tapping can pause the flow of falling items
   - dialogue causing many ui errors on mobile
   - blue overlay on tap
