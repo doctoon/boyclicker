@@ -7,6 +7,11 @@ mrow
 ~~all of them are fixed :D<br>~~
 - UI Breaking on Non-Computer devices.  
 - Prices not updating to the new EPS changes from 1.5 when reloading.
+- Non-Computer Bugs:
+  - Barely works below windows vista
+    - Internet explorer has NO functionality, only opera works and the bk is very squished.
+  - Doesnt work on the DS
+    - Taps/Clicks dont register
 - MOBILE BUGS:
   - meow.mp3 is too loud (and some other sounds are basically unhearable)
   - comic sans isnt on your phone
