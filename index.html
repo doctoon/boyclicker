@@ -4,10 +4,8 @@
     <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Embed Tags -->
     <meta content="boyclicker" property="og:title">
-    <meta content="click the boykissr (version 1.5)" property="og:description">
+    <meta content="click the boykissr (1.6)" property="og:description">
     <meta content="https://i.ibb.co/yRqyFS9/thumbnail.png" property="og:image">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#ff0015">
     <meta name="twitter:image" content="https://i.ibb.co/fDNQ2QD/kisserstatic.png">
@@ -15,53 +13,50 @@
     <title>boyclicker</title>
     <link rel="icon" href="boy.ico">
     <style>
-        body { background-color: #fcfefc; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; user-select: none; flex-direction: column; overflow: hidden; }
-        #counter { font-size: 30px; margin-bottom: 20px; text-align: center; user-select: none; font-family: 'Comic Sans MS', sans-serif; transition: transform 0.2s ease-in-out; }
-        #clickable-gif { width: 200px; cursor: pointer; user-select: none; -webkit-user-drag: none; transition: transform 0.2s ease; transform-origin: center; }
-        #multiplier-text { font-size: 25px; color: #ff1493; font-weight: bold; font-family: 'Comic Sans MS', sans-serif; margin-top: 10px; transition: opacity 0.3s ease; }
-        #fun-text-container { margin-top: 20px; font-size: 30px; text-align: center; }
-        .fun-text { font-size: 25px; color: #ff1493; font-weight: bold; opacity: 0; position: absolute; transition: opacity 0.6s ease-out, transform 0.6s ease-out; font-family: 'Comic Sans MS'; }
-        .falling-gif { position: absolute; width: 100px; cursor: pointer; transition: transform 0.2s ease; }
-        #progress-bar-container {
-            width: 100%;
-            height: 10px;
-            background-color: #a67c00;
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        @font-face {
+            font-family: 'Comic Sans Web';
+            src: url('ComicSans.woff2') format('woff2'),url('ComicSans.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
-        #progress-bar {
-            height: 100%;
-            background-color: #ffdc73;
-            width: 0%;
-            transition: width 1s linear;
-        }
+        body { background-color: #fcfefc; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; user-select: none; overflow: hidden; font-family: 'Comic Sans MS', 'Comic Sans Web'}
+        #counter, #multiplier-text, #fun-text-container, #dialogueBox { text-align: center; }
+        #multiplier-text { font-weight: bold; transition: transform 0.2s ease-in-out, opacity 0.3s ease; }
+        #counter { font-size: 30px; margin-bottom: 20px; }
+        #multiplier-text { font-size: 25px; color: #ff1493; margin-top: 10px; }
+        #fun-text-container { margin-top: 20px; font-size: 30px; }
+        .fun-text { font-size: 25px; color: #ff1493; font-weight: bold; opacity: 0; position: absolute; transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        #clickable-gif, .falling-gif { cursor: pointer; transition: transform 0.2s ease; }
+        #clickable-gif { width: 200px; user-select: none; -webkit-user-drag: none; transform-origin: center; }
+        .falling-gif { position: absolute; width: 100px; }
+        #progress-bar-container { width: 100%; height: 10px; background-color: #a67c00; display: none; position: fixed; top: 0; left: 0; }
+        #progress-bar { width: 0%; height: 100%; background-color: #ffdc73; transition: width 1s linear; }
         #shop { margin-top: 20px; text-align: center; }
-        .shop-button { background-color: #ff1493; color: white; border: none; padding: 10px 20px; font-size: 18px; cursor: pointer; margin: 5px; }
-        .shop-button:disabled { background-color: #bbb; cursor: not-allowed; }
-        .center-container {
-            display: flex;
-            justify-content: center;
-            position: relative;
-            width: 100%;
-        }
-        #dialogueBox {
-            text-align: center; font-family: 'Comic Sans MS', sans-serif; font-size: 26px; color: white; position: fixed; bottom: 100px; width: 100%; background-color: rgba(0, 0, 0, 0.35); padding: 10px;
-        }
-        #dialogueBox { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .center-container { display: flex; justify-content: center; position: relative; width: 100%; }
+        #dialogueBox { display: flex; flex-direction: column; align-items: center; font-size: 26px; color: white; position: fixed; bottom: 100px; width: 100%; background-color: rgba(0, 0, 0, 0.35); padding: 10px; }
         #characterName { font-size: 18px; margin: 0; color: #d8d8d8; }
         #dialogueText { font-size: 22px; margin: 0; color: white; }
+        /* MOBILE STYLES */
+        #clickable-gif {-webkit-tap-highlight-color: transparent; }
+        @media (max-width:768px) {
+            #counter, .falling-gif {overflow: hidden;}
+            #dialogueBox {position:relative; top:25%;}
+            #dialogueText {font-size: 16px;}
+            .shop-container {position:relative; top:-12%;}
+            #play-music-button, #mute-music-button {position:relative; top:-13%;}
+            #main-container {position:relative; top:1%;}
+        }
     </style>
 </head>
 <body>
-    <div>
+    <div id="main-container">
         <div id="counter">cliks: 0</div>
         <div class="center-container">
             <img id="clickable-gif" src="kisserstatic.png" alt="Click me!">
         </div>
+        <div id="multiplier-text">mutlipler: x1</div>
     </div>
-    <div id="multiplier-text">mutlipler: x1</div>
     <div id="fun-text-container"><div id="fun-text" class="fun-text">:3</div></div>
     <div id="progress-bar-container"><div id="progress-bar"></div></div>
     <div id="dialogueBox">
@@ -124,7 +119,7 @@
             let displayCounter = counter.toFixed(3);
             if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
             else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
-            counterText.innerHTML = `cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
+            counterText.innerHTML = `cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 10))}` : ''}`;
             if (currentMilestone < milestones.length && counter >= milestones[currentMilestone]) {
                 document.getElementById("dialogueText").innerText = dialogues[currentMilestone];
                 document.getElementById("dialogueText").style.color = "#FFFFFF"
@@ -255,7 +250,6 @@
                             multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
                         }
                     }, duration);
-
                     fallingItem.remove();
                     activateEffect(duration / 1000);
                     checkElementClickAchievements("falling-gif");
@@ -287,7 +281,7 @@
             let displayCounter = counter.toFixed(3);
             if (displayCounter.endsWith('.000')) displayCounter = displayCounter.replace('.000', '');
             else displayCounter = displayCounter.replace(/(\.0+|(?<=\.\d)0+)$/, '');
-            counterText.innerHTML = `cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 50))}` : ''}`;
+            counterText.innerHTML = `cliks: ${displayCounter}<br>${counter >= 100 ? `:${'3'.repeat(Math.min(Math.floor(counter / 100), 10))}` : ''}`;
         }
         // DIALOGUE??????
         let currentMilestone = 0;
@@ -324,12 +318,15 @@
                 5: 'this is no ordinary boykisser... it\'s glowing with mysterious golden energy. what does it all mean?',
                 7: 'the sky seems to have opened up for this one. what kind of secret is this golden boykisser hiding?',
                 10: 'it\'s almost as if the universe is guiding you to this moment. what will happen next?',
+                30: 'something is about to happen... i can feel it...',
+                31: 'the intensity is building...',
+                32: 'it looks like something big is about to happen if you clik another falling boykisser..',
             };
             if (goldenClicks in goldenDialogues) {
                 dialogueText.innerText = goldenDialogues[goldenClicks];
                 dialogueText.style.color = '#ffeea1';
             } else if (goldenClicks > 32 && !specialEvent1Ran) {
-                dialogueText.innerText = 'wow! a mysterious force has granted you a *x3* click boost! time to go wild!';
+                dialogueText.innerText = 'A mysterious force has granted you a 3x click boost!';
                 dialogueText.style.color = '#ffeea1';
                 clickMultiplier *= 3;
                 multiplierText.textContent = `multiplier: x${clickMultiplier}`;
@@ -368,8 +365,8 @@
         const updateUI = () => {
             updateCounterText();
             multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-            const autoClickerCost = Math.floor(20 * Math.pow(1.3, autoClickerAmount));
-            const clickMultiplierCost = Math.floor(50 * Math.pow(1.5, clickMultiplierLevel));
+            const autoClickerCost = Math.floor(20 * Math.pow(1.2, autoClickerAmount));
+            const clickMultiplierCost = Math.floor(50 * Math.pow(1.3, clickMultiplierLevel));
             document.getElementById("auto-clicker-button").textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${autoClickerCost}`;
             document.getElementById("auto-clicker-button").setAttribute("data-cost", autoClickerCost);
             document.getElementById("click-multiplier-button").textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${clickMultiplierCost}`;
@@ -450,8 +447,8 @@
                 document.getElementById("dialogueText").innerText = savedState.dialogueText || "boyclicker; created by @doctoon on discord :3";
                 updateCounterText();
                 multiplierText.textContent = `mutlipler: x${clickMultiplier}`;
-                const autoClickerCost = Math.floor(20 * Math.pow(1.3, autoClickerAmount));
-                const clickMultiplierCost = Math.floor(50 * Math.pow(1.5, clickMultiplierLevel));
+                const autoClickerCost = Math.floor(20 * Math.pow(1.2, autoClickerAmount));
+                const clickMultiplierCost = Math.floor(50 * Math.pow(1.3, clickMultiplierLevel));
                 document.getElementById('auto-clicker-button').textContent = `autp clikr (x${autoClickerAmount}) - Cost: ${autoClickerCost}`;
                 document.getElementById('auto-clicker-button').setAttribute('data-cost', autoClickerCost);
                 document.getElementById('click-multiplier-button').textContent = `clik multiplr (x${clickMultiplierLevel}) - Cost: ${clickMultiplierCost}`;
@@ -601,6 +598,7 @@
         function createShop() {
             const shopContainer = document.createElement('div');
             shopContainer.style.cssText = 'text-align:center;margin-top:20px;';
+            shopContainer.className = 'shop-container';
             const autoClickerButton = createShopButton(
                 'auto-clicker-button',
                 `autp clikr (x${autoClickerAmount}) - Cost: ${20 * autoClickerAmount}`,
