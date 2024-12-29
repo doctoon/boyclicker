@@ -5,23 +5,26 @@ mrow
 
 ## acknologed bugs:
 ~~all of them are fixed :D<br>~~
+
 - UI Breaking on Non-Computer devices.  
-- Prices not updating to the new EPS changes from 1.5 when reloading.
+- ~~Prices not updating to the new EPS changes from 1.5 when reloading.~~
 - Non-Computer Bugs:
   - Barely works below windows vista
-    - Internet explorer has NO functionality, only opera works and the bk is very squished.
+    - Internet explorer has NO functionality, only opera (and some other untested browsers) work and the bk is very squished.
   - Doesnt work on the DS
     - Taps/Clicks dont register
 - MOBILE BUGS:
   - meow.mp3 is too loud (and some other sounds are basically unhearable)
-  - comic sans isnt on your phone
-  - :33333 can overflow [no css query preventing that]
+  - ~~comic sans isnt on your phone~~
+  - ~~:33333 can overflow [no css query preventing that]~~
     - falling bk also falls beyond screen bounds.
   - spam tapping can pause the flow of falling items
-  - dialogue causing many ui errors on mobile
-  - blue overlay on tap
+  - ~~dialogue causing many ui errors on mobile~~
+  - ~~blue overlay on tap~~
 
-feel free to send any bug reports to `doctoon` on discord.
+Progress: 40% Fixed [////------]  
+Latest Bugfix: 1.6 - Mobile Support Update  
+feel free to send any bug reports to `doctoon` on discord.  
 
 ## achivmnets >w<
 #### CLIK COUNTR ACHIVMNETS:
@@ -38,6 +41,9 @@ Read More.
 <br>
 ## Changelog
 MORE COMING SOON !!
+# Update 1.6: Mobile Support !!!!
+All this update does is fix some major bugs that prevented most mobile devices from working. <br>
+there may still be bugs [as the [acknowledged bugs](acknologed-bugs) suggest. ]
 # Update 1.5: merry clikmas
 ##### Released on December 24th 2024.
 From **Discord Descent > #📢・Announcements**:<br>
