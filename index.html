@@ -111,7 +111,7 @@
             muteButton.textContent = audio2.muted ? 'unmute :3' : 'mute :c';
         });
         // click thing
-        function boykisserClick() {
+        gif.addEventListener('click', e => {
             const clickAudio = new Audio('click.mp3'); 
             clickAudio.play();
             counter += 1 * clickMultiplier;
@@ -132,10 +132,7 @@
             setTimeout(() => {gif.src = gifSrc;}, 10);
             setTimeout(() => {gif.src = imgSrc;}, 720);
             if (Math.random() < 0.05) animateFunText();
-        }
-        gif.addEventListener('click', e => {boykisserClick()});
-        gif.addEventListener('touchstart', e => {boykisserClick()});
-        gif.addEventListener('mousedown', e => {boykisserClick()});
+        });
         function updateStyles() {
             if (counter > 1000 || goldenClicks > 32) {
                 gifSrc = "goldbk.gif";
