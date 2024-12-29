@@ -42,6 +42,7 @@ Read More.
 ## Changelog
 MORE COMING SOON !!
 # Update 1.6: Mobile Support !!!!
+##### Released on December 29th 2024.
 All this update does is fix some major bugs that prevented most mobile devices from working. <br>
 there may still be bugs [as the [acknowledged bugs](acknologed-bugs) suggest. ]
 # Update 1.5: merry clikmas
